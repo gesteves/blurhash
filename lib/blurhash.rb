@@ -66,6 +66,17 @@ module Blurhash
     pixels
   end
 
+    # Returns whether or not a given blurhash is valid.
+  def self.valid_blurhash?(blurhash)
+    return false if blurhash.blank? || blurhash.size < 6
+
+    size_flag = Base83.decode83(blurhash[0])
+    num_y = (size_flag / 9.0).floor + 1
+    num_x = (size_flag % 9) + 1
+
+    blurhash.size == 4 + 2 * num_x * num_y
+  end
+
   def self.srgb_to_linear(value)
     v = value / 255.0
     if v <= 0.04045
